@@ -5,15 +5,19 @@ import { Background, Container, AreaInput, Input, SubmitButton, SubmitText } fro
 import { useNavigation } from '@react-navigation/native'
 
 import { AuthContext } from '../../contexts/auth'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 
 export default function SignUp() {
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const navigation = useNavigation();
 
-  const { user } = useContext(AuthContext);
+  const { signUp } = useContext(AuthContext);
 
   function handleSignUp(){
-    console.log(user.nome);
+    signUp(email, password, nome);
   }
 
 
@@ -26,18 +30,25 @@ export default function SignUp() {
         <AreaInput>
           <Input
             placeholder="Seu Nome"
+            value={nome}
+            onChangeText={ (text) => setNome(text) }
           />
         </AreaInput>
 
         <AreaInput>
           <Input
             placeholder="Seu Email"
+            value={email}
+            onChangeText={ (text) => setEmail(text) }
           />
         </AreaInput>
         
         <AreaInput>
           <Input
             placeholder="Sua Senha"
+            value={password}
+            onChangeText={ (text) => setPassword(text) }
+            secureTextEntry={true}
           />
         </AreaInput>
 
