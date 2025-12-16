@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Platform } from 'react-native'
+import { Platform, ActivityIndicator } from 'react-native'
 import { Background, Container, AreaInput, Input, SubmitButton, SubmitText } from '../SignIn/styles'
 import { useNavigation } from '@react-navigation/native'
 
@@ -14,9 +14,11 @@ export default function SignUp() {
 
   const navigation = useNavigation();
 
-  const { signUp } = useContext(AuthContext);
+  const { signUp, loadingAuth } = useContext(AuthContext);
 
   function handleSignUp(){
+    if(nome === '' || email === '' || password === '')return;
+
     signUp(email, password, nome);
   }
 
@@ -52,8 +54,16 @@ export default function SignUp() {
           />
         </AreaInput>
 
-        <SubmitButton activeOpacity={0.8}  onPress={handleSignUp}>
-          <SubmitText>Cadastrar</SubmitText>
+        <SubmitButton 
+        activeOpacity={0.8} 
+        onPress={handleSignUp}>
+        {
+          loadingAuth ? (
+            <ActivityIndicator size={20} color="#FFF" />
+          ) : (
+            <SubmitText>Cadastrar</SubmitText>
+          )
+        }
         </SubmitButton>
       </Container>
     </Background>
