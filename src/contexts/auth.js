@@ -28,8 +28,44 @@ function AuthProvider({ children }) {
     }
   }
 
+  async function signIn(email, password) {
+    setLoadingAuth(true);
+
+    try {
+        const response = await api.post("/login", {
+        password: password,
+        email: email,
+      })
+
+      const {id, name, token} = response.data;
+
+      const data = {
+        id,
+        name,
+        token,
+        email,
+      };
+
+      api.defaults.headers['Authorization'] = `Bearer ${token}`
+
+      setUser({
+        id,
+        name,
+        email,
+      })
+
+      setLoadingAuth(false);
+
+    } catch (err) {
+      console.log("Erro ao acessar" + err);
+      setLoadingAuth(false);
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ signed: !!user, user, setUser, signUp, loadingAuth }}>
+    <AuthContext.Provider
+      value={{ signed: !!user, user, setUser, signUp, signIn, loadingAuth }}
+    >
       {children}
     </AuthContext.Provider>
   );
