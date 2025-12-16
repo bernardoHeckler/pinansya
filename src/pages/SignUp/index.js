@@ -4,8 +4,19 @@ import { Platform } from 'react-native'
 import { Background, Container, AreaInput, Input, SubmitButton, SubmitText } from '../SignIn/styles'
 import { useNavigation } from '@react-navigation/native'
 
+import { AuthContext } from '../../contexts/auth'
+import { useContext } from 'react'
+
 export default function SignUp() {
   const navigation = useNavigation();
+
+  const { user } = useContext(AuthContext);
+
+  function handleSignUp(){
+    console.log(user.nome);
+  }
+
+
   return (
     <Background>
       <Container
@@ -30,7 +41,7 @@ export default function SignUp() {
           />
         </AreaInput>
 
-        <SubmitButton activeOpacity={0.8}>
+        <SubmitButton activeOpacity={0.8}  onPress={handleSignUp}>
           <SubmitText>Cadastrar</SubmitText>
         </SubmitButton>
       </Container>
