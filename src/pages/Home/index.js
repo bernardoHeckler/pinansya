@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, Button, TouchableOpacity } from "react-native";
+import { View, Text, Button, TouchableOpacity, Modal } from "react-native";
 import { AuthContext } from "../../contexts/auth";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -7,16 +7,19 @@ import Header from "../../components/Header";
 import { Background, ListBalance, Area, Title, List } from "./styles";
 import BalanceItem from "../../components/BalanceItem";
 import HistoricoList from "../../components/HistoricoList";
+import CalendarModal from "../../components/CalendarModal";
 
 import api from "../../services/api";
 import { format, set } from "date-fns";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+
 
 export default function Home() {
   const isFocused = useIsFocused();
   const [listBalance, setListBalance] = useState([]);
   const [dateMovements, setDateMovements] = useState(new Date());
   const [movements, setMovements] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     let isActive = true;
@@ -24,11 +27,11 @@ export default function Home() {
     async function getMovements() {
       let dateFormated = format(dateMovements, "dd/MM/yyyy");
 
-      const receives = await api.get('/receives', {
-        params:{
-          date: dateFormated
-        }
-      })
+      const receives = await api.get("/receives", {
+        params: {
+          date: dateFormated,
+        },
+      });
 
       const balance = await api.get("/balance", {
         params: {
@@ -46,17 +49,21 @@ export default function Home() {
   }, [isFocused, dateMovements]);
 
   async function handleDelete(id) {
-    try{
-      await api.delete('/receives/delete', {
-        params:{
-          item_id: id
-        }
-      })
+    try {
+      await api.delete("/receives/delete", {
+        params: {
+          item_id: id,
+        },
+      });
 
-      setDateMovements(new Date())
-    }catch(err){
-      console.log(err)
+      setDateMovements(new Date());
+    } catch (err) {
+      console.log(err);
     }
+  }
+
+  function filterDateMovements(dateSelected) {
+    setDateMovements(dateSelected);
   }
 
   return (
@@ -71,7 +78,7 @@ export default function Home() {
       />
 
       <Area>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
           <MaterialIcons name="event" color="#121212" size={30} />
         </TouchableOpacity>
         <Title>Últimas Movimentações</Title>
@@ -79,10 +86,18 @@ export default function Home() {
       <List
         data={movements}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <HistoricoList data={item} deleteItem={handleDelete}/>}
+        renderItem={({ item }) => (
+          <HistoricoList data={item} deleteItem={handleDelete} />
+        )}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
       />
+      <Modal visible={modalVisible} animationType="fade" transparent={true}>
+        <CalendarModal
+          setVisible={() => setModalVisible(false)}
+          handleFilter={filterDateMovements}
+        />
+      </Modal>
     </Background>
   );
 }
