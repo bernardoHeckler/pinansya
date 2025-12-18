@@ -16,15 +16,13 @@ export const Area = styled.View`
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   flex-direction: row;
-  padding: 0 14px;
-  padding-top: 14x;
-  align-items: baseline;
+  padding: 14px;
+  align-items: center;
 `;
 
 export const Title = styled.Text`
-  margin-left: 4px;
+  margin-left: 8px;
   color: #121212;
-  margin-bottom: 14px;
   font-weight: bold;
   font-size: 18px;
 `;

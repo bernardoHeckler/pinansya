@@ -1,44 +1,51 @@
 import {
   DrawerItemList,
   DrawerContentScrollView,
-  DrawerItem,
 } from "@react-navigation/drawer";
-import React from "react";
-import { View, Text, Image } from "react-native";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../../contexts/auth";
+import { Feather } from '@expo/vector-icons';
+import {
+  Container,
+  HeaderSection,
+  UserContainer,
+  AvatarContainer,
+  UserName,
+  WelcomeText,
+  MenuSection,
+  FooterSection,
+  LogoutButton,
+  LogoutText
+} from './styles';
+
 export default function CustomDrawer(props) {
   const { user, signOut } = useContext(AuthContext);
 
   return (
-    <DrawerContentScrollView>
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 25,
-        }}
-      >
-        <Image
-          source={require("../../assets/Logo.png")}
-          style={{ width: 90, height: 90 }}
-          resizeMode="contain"
-        />
-        <Text style={{ fontSize: 18, marginTop: 5 }}>Bem-Vindo</Text>
-        <Text
-          numberOfLines={1}
-          style={{
-            fontSize: 17,
-            fontWeight: "bold",
-            marginTop: 14,
-            paddingHorizontal: 20,
-          }}
-        >
-          {user && user.name}
-        </Text>
-      </View>
-      <DrawerItemList {...props} />
-      <DrawerItem {...props} label="Sair do App" onPress={ () => signOut()} />
+    <DrawerContentScrollView
+      contentContainerStyle={{ flex: 1 }}
+      showsVerticalScrollIndicator={false}
+    >
+      <HeaderSection>
+        <UserContainer>
+          <AvatarContainer>
+            <Feather name="user" size={35} color="#3b3dbf" />
+          </AvatarContainer>
+          <UserName>{user?.name || 'Usuário'}</UserName>
+          <WelcomeText>Bem-vindo ao Pinansya</WelcomeText>
+        </UserContainer>
+      </HeaderSection>
+
+      <MenuSection>
+        <DrawerItemList {...props} />
+      </MenuSection>
+
+      <FooterSection>
+        <LogoutButton onPress={() => signOut()}>
+          <Feather name="log-out" size={20} color="#c62c36" />
+          <LogoutText>Sair do App</LogoutText>
+        </LogoutButton>
+      </FooterSection>
     </DrawerContentScrollView>
   );
 }

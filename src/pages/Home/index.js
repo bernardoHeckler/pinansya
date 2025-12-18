@@ -11,7 +11,7 @@ import CalendarModal from "../../components/CalendarModal";
 
 import api from "../../services/api";
 import { format, set } from "date-fns";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { MaterialIcons } from '@expo/vector-icons';
 
 
 export default function Home() {

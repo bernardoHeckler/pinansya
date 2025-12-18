@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { RegisterContainer, RegisterTypeButton, RegisterLabel } from "./styles";
-import Feather from "react-native-vector-icons/Feather";
+import { Feather } from '@expo/vector-icons';
 
 export default function RegisterTypes({ type, sendTypeChanged }) {
   const [typeChecked, setTypeChecked] = useState(type || 'receita');

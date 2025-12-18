@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, TipoText, Tipo, IconView, ValorText } from "./styles";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { FontAwesome } from '@expo/vector-icons';
 import { TouchableWithoutFeedback, Alert } from "react-native";
 
 export default function HistoricoList({ data, deleteItem}) {
@@ -27,7 +27,7 @@ export default function HistoricoList({ data, deleteItem}) {
       <Container>
         <Tipo>
           <IconView tipo={data.type}>
-            <Icon
+            <FontAwesome
               name={data.type === "despesa" ? "arrow-down" : "arrow-up"}
               size={20}
               color="#fff"
